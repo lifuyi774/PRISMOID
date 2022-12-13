@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdb.ssm.dao.MutationsAffectingStatisticsDao">
+  <resultMap id="BaseResultMap" type="com.pdb.ssm.model.MutationsAffectingStatistics">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="PTMSites" jdbcType="VARCHAR" property="ptmsites" />
+    <result column="cancer" jdbcType="INTEGER" property="cancer" />
+    <result column="disease" jdbcType="INTEGER" property="disease" />
+    <result column="population" jdbcType="INTEGER" property="population" />
+    <result column="total" jdbcType="INTEGER" property="total" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, PTMSites, cancer, disease, population, total
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from mutationsAffectingPTMSitesForStatistics
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from mutationsAffectingPTMSitesForStatistics
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pdb.ssm.model.MutationsAffectingStatistics">
+    insert into mutationsAffectingPTMSitesForStatistics (id, PTMSites, cancer, 
+      disease, population, total
+      )
+    values (#{id,jdbcType=INTEGER}, #{ptmsites,jdbcType=VARCHAR}, #{cancer,jdbcType=INTEGER}, 
+      #{disease,jdbcType=INTEGER}, #{population,jdbcType=INTEGER}, #{total,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pdb.ssm.model.MutationsAffectingStatistics">
+    insert into mutationsAffectingPTMSitesForStatistics
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="ptmsites != null">
+        PTMSites,
+      </if>
+      <if test="cancer != null">
+        cancer,
+      </if>
+      <if test="disease != null">
+        disease,
+      </if>
+      <if test="population != null">
+        population,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ptmsites != null">
+        #{ptmsites,jdbcType=VARCHAR},
+      </if>
+      <if test="cancer != null">
+        #{cancer,jdbcType=INTEGER},
+      </if>
+      <if test="disease != null">
+        #{disease,jdbcType=INTEGER},
+      </if>
+      <if test="population != null">
+        #{population,jdbcType=INTEGER},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pdb.ssm.model.MutationsAffectingStatistics">
+    update mutationsAffectingPTMSitesForStatistics
+    <set>
+      <if test="ptmsites != null">
+        PTMSites = #{ptmsites,jdbcType=VARCHAR},
+      </if>
+      <if test="cancer != null">
+        cancer = #{cancer,jdbcType=INTEGER},
+      </if>
+      <if test="disease != null">
+        disease = #{disease,jdbcType=INTEGER},
+      </if>
+      <if test="population != null">
+        population = #{population,jdbcType=INTEGER},
+      </if>
+      <if test="total != null">
+        total = #{total,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pdb.ssm.model.MutationsAffectingStatistics">
+    update mutationsAffectingPTMSitesForStatistics
+    set PTMSites = #{ptmsites,jdbcType=VARCHAR},
+      cancer = #{cancer,jdbcType=INTEGER},
+      disease = #{disease,jdbcType=INTEGER},
+      population = #{population,jdbcType=INTEGER},
+      total = #{total,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectCancerMutationsAffectingPTMSites" resultType="com.pdb.ssm.model.GroupType">
+        select PTMSites as name,cancer as value from mutationsAffectingPTMSitesForStatistics
+        order by value
+        DESC
+    </select>
+
+  <select id="selectDiseaseMutationsAffectingPTMSites" resultType="com.pdb.ssm.model.GroupType">
+        select PTMSites as name,disease as value from mutationsAffectingPTMSitesForStatistics
+        order by value
+        DESC
+    </select>
+
+  <select id="selectPopulationMutationsAffectingPTMSites" resultType="com.pdb.ssm.model.GroupType">
+        select PTMSites as name,population as value from mutationsAffectingPTMSitesForStatistics
+        order by value
+        DESC
+    </select>
+
+  <select id="selectTotalMutationsAffectingPTMSites" resultType="com.pdb.ssm.model.GroupType">
+        select PTMSites as name,total as value from mutationsAffectingPTMSitesForStatistics
+        order by value
+        DESC
+    </select>
+</mapper>

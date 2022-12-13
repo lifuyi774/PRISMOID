@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdb.ssm.dao.MutationDao">
+  <resultMap id="BaseResultMap" type="com.pdb.ssm.model.Mutation">
+    <result column="Maingenename" jdbcType="VARCHAR" property="maingenename" />
+    <result column="SwissProtAC" jdbcType="VARCHAR" property="swissprotac" />
+    <result column="FTId" jdbcType="VARCHAR" property="ftid" />
+    <result column="AAchange" jdbcType="VARCHAR" property="aachange" />
+    <result column="Typeofvariant" jdbcType="VARCHAR" property="typeofvariant" />
+    <result column="dbSNP" jdbcType="VARCHAR" property="dbsnp" />
+    <result column="Diseasename" jdbcType="VARCHAR" property="diseasename" />
+  </resultMap>
+  <insert id="insert" parameterType="com.pdb.ssm.model.Mutation">
+    insert into mutation (Maingenename, SwissProtAC, FTId, 
+      AAchange, Typeofvariant, dbSNP, 
+      Diseasename)
+    values (#{maingenename,jdbcType=VARCHAR}, #{swissprotac,jdbcType=VARCHAR}, #{ftid,jdbcType=VARCHAR}, 
+      #{aachange,jdbcType=VARCHAR}, #{typeofvariant,jdbcType=VARCHAR}, #{dbsnp,jdbcType=VARCHAR}, 
+      #{diseasename,jdbcType=VARCHAR})
+  </insert>
+
+  <select id="selectMuByUniprotId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM mutation
+        WHERE SwissProtAC = #{swissprotac}
+    </select>
+
+  <select id="selectGroupByTOV" resultType="com.pdb.ssm.model.GroupType">
+        SELECT CONCAT(substr(AAchange,3,3),"->",substr(AAchange,length(AAchange)-2,3)) as name, COUNT(*) as value
+        from mutation
+        where Typeofvariant = #{Typeofvariant}
+        group by name
+        order by value
+        DESC
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select * from mutation
+    </select>
+
+    <delete id="deleteByColumn">
+        delete from mutation
+        where Maingenename = #{maingenename,jdbcType=VARCHAR}
+        and SwissProtAC = #{swissprotac,jdbcType=VARCHAR}
+        and FTId = #{ftid,jdbcType=VARCHAR}
+        and AAchange = #{aachange,jdbcType=VARCHAR}
+        and Typeofvariant = #{typeofvariant,jdbcType=VARCHAR}
+        and dbSNP = #{dbsnp,jdbcType=VARCHAR}
+        and Diseasename = #{diseasename,jdbcType=VARCHAR}
+  </delete>
+
+</mapper>

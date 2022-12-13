@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdb.ssm.dao.DownloadDao">
+  <resultMap id="BaseResultMap" type="com.pdb.ssm.model.Download">
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="downloadTimes" jdbcType="INTEGER" property="downloadtimes" />
+    <result column="lastUpdate" jdbcType="TIMESTAMP" property="lastupdate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, description, url, downloadTimes, lastUpdate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from download
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from download
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.pdb.ssm.model.Download">
+    insert into download (id, name, description,
+      url, downloadTimes, lastUpdate
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR},
+      #{url,jdbcType=VARCHAR}, #{downloadtimes,jdbcType=INTEGER}, #{lastupdate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pdb.ssm.model.Download">
+    insert into download
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="downloadtimes != null">
+        downloadTimes,
+      </if>
+      <if test="lastupdate != null">
+        lastUpdate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadtimes != null">
+        #{downloadtimes,jdbcType=INTEGER},
+      </if>
+      <if test="lastupdate != null">
+        #{lastupdate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pdb.ssm.model.Download">
+    update download
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="downloadtimes != null">
+        downloadTimes = #{downloadtimes,jdbcType=INTEGER},
+      </if>
+      <if test="lastupdate != null">
+        lastUpdate = #{lastupdate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pdb.ssm.model.Download">
+    update download
+    set name = #{name,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      downloadTimes = #{downloadtimes,jdbcType=INTEGER},
+      lastUpdate = #{lastupdate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+        select * from download
+    </select>
+
+    <update id="download" parameterType="java.lang.String">
+    update download
+    set downloadTimes = downloadTimes + 1
+    where name = #{name,jdbcType=VARCHAR}
+  </update>
+
+    <select id="selectDownloadTimes" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select downloadTimes from download
+        where name = #{name,jdbcType=VARCHAR}
+    </select>
+</mapper>

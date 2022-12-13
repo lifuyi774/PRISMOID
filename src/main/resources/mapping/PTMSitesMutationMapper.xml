@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdb.ssm.dao.PTMSitesMutationDao">
+  <resultMap id="BaseResultMap" type="com.pdb.ssm.model.PTMSitesMutation">
+    <result column="gene" jdbcType="VARCHAR" property="gene" />
+    <result column="refseq" jdbcType="VARCHAR" property="refseq" />
+    <result column="mutationPosition" jdbcType="INTEGER" property="mutationposition" />
+    <result column="mutationAlt" jdbcType="VARCHAR" property="mutationalt" />
+    <result column="mutationSummary" jdbcType="VARCHAR" property="mutationsummary" />
+    <result column="sitePosition" jdbcType="INTEGER" property="siteposition" />
+    <result column="siteResidue" jdbcType="VARCHAR" property="siteresidue" />
+    <result column="uniprotACC" jdbcType="VARCHAR" property="uniprotacc" />
+    <result column="uniprotID" jdbcType="VARCHAR" property="uniprotid" />
+  </resultMap>
+  <insert id="insert" parameterType="com.pdb.ssm.model.PTMSitesMutation">
+    insert into population_mutations_affecting_ptm_sites (gene, refseq, mutationPosition, 
+      mutationAlt, mutationSummary, sitePosition, 
+      siteResidue, uniprotACC, uniprotID
+      )
+    values (#{gene,jdbcType=VARCHAR}, #{refseq,jdbcType=VARCHAR}, #{mutationposition,jdbcType=INTEGER}, 
+      #{mutationalt,jdbcType=VARCHAR}, #{mutationsummary,jdbcType=VARCHAR}, #{siteposition,jdbcType=INTEGER}, 
+      #{siteresidue,jdbcType=VARCHAR}, #{uniprotacc,jdbcType=VARCHAR}, #{uniprotid,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pdb.ssm.model.PTMSitesMutation">
+    insert into population_mutations_affecting_ptm_sites
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="gene != null">
+        gene,
+      </if>
+      <if test="refseq != null">
+        refseq,
+      </if>
+      <if test="mutationposition != null">
+        mutationPosition,
+      </if>
+      <if test="mutationalt != null">
+        mutationAlt,
+      </if>
+      <if test="mutationsummary != null">
+        mutationSummary,
+      </if>
+      <if test="siteposition != null">
+        sitePosition,
+      </if>
+      <if test="siteresidue != null">
+        siteResidue,
+      </if>
+      <if test="uniprotacc != null">
+        uniprotACC,
+      </if>
+      <if test="uniprotid != null">
+        uniprotID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="gene != null">
+        #{gene,jdbcType=VARCHAR},
+      </if>
+      <if test="refseq != null">
+        #{refseq,jdbcType=VARCHAR},
+      </if>
+      <if test="mutationposition != null">
+        #{mutationposition,jdbcType=INTEGER},
+      </if>
+      <if test="mutationalt != null">
+        #{mutationalt,jdbcType=VARCHAR},
+      </if>
+      <if test="mutationsummary != null">
+        #{mutationsummary,jdbcType=VARCHAR},
+      </if>
+      <if test="siteposition != null">
+        #{siteposition,jdbcType=INTEGER},
+      </if>
+      <if test="siteresidue != null">
+        #{siteresidue,jdbcType=VARCHAR},
+      </if>
+      <if test="uniprotacc != null">
+        #{uniprotacc,jdbcType=VARCHAR},
+      </if>
+      <if test="uniprotid != null">
+        #{uniprotid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectPopulationSitesMutation" resultMap="BaseResultMap">
+  select * from population_mutations_affecting_ptm_sites where 1=0
+  <if test="null != pdbList and pdbList.size != 0">
+    <foreach item="item" index="index" collection="pdbList">or (uniprotACC=#{item.UniProtID} and sitePosition=#{item.PDBPosition})
+    </foreach>
+  </if>
+  </select>
+
+  <select id="selectDiseaseSitesMutation" resultMap="BaseResultMap">
+    select * from disease_mutations_affecting_ptm_sites where 1=0
+    <if test="null != pdbList and pdbList.size != 0">
+      <foreach item="item" index="index" collection="pdbList">or (uniprotACC=#{item.UniProtID} and sitePosition=#{item.PDBPosition})
+      </foreach>
+    </if>
+  </select>
+
+  <select id="selectCancerSitesMutation" resultMap="BaseResultMap">
+    select * from cancer_mutations_affecting_ptm_sites where 1=0
+    <if test="null != pdbList and pdbList.size != 0">
+      <foreach item="item" index="index" collection="pdbList">or (uniprotACC=#{item.UniProtID} and sitePosition=#{item.PDBPosition})
+      </foreach>
+    </if>
+  </select>
+
+</mapper>

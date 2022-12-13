@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdb.ssm.dao.DsspDao">
+  <resultMap id="BaseResultMap" type="com.pdb.ssm.model.Dssp">
+    <result column="PDBChain" jdbcType="VARCHAR" property="pdbchain" />
+    <result column="PTMPositioninChain" jdbcType="INTEGER" property="ptmpositioninchain" />
+    <result column="TCO" jdbcType="VARCHAR" property="tco" />
+    <result column="KAPPA" jdbcType="VARCHAR" property="kappa" />
+    <result column="ALPHA" jdbcType="VARCHAR" property="alpha" />
+    <result column="PHI" jdbcType="VARCHAR" property="phi" />
+    <result column="PSI" jdbcType="VARCHAR" property="psi" />
+    <result column="X-CA" jdbcType="VARCHAR" property="xCa" />
+    <result column="Y-CA" jdbcType="VARCHAR" property="yCa" />
+    <result column="Z-CA" jdbcType="VARCHAR" property="zCa" />
+  </resultMap>
+  <insert id="insert" parameterType="com.pdb.ssm.model.Dssp">
+    insert into DSSP (PDBChain, PTMPositioninChain, TCO, 
+      KAPPA, ALPHA, PHI, 
+      PSI, X-CA, Y-CA, Z-CA
+      )
+    values (#{pdbchain,jdbcType=VARCHAR}, #{ptmpositioninchain,jdbcType=INTEGER}, #{tco,jdbcType=VARCHAR}, 
+      #{kappa,jdbcType=VARCHAR}, #{alpha,jdbcType=VARCHAR}, #{phi,jdbcType=VARCHAR}, 
+      #{psi,jdbcType=VARCHAR}, #{xCa,jdbcType=VARCHAR}, #{yCa,jdbcType=VARCHAR}, #{zCa,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pdb.ssm.model.Dssp">
+    insert into DSSP
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pdbchain != null">
+        PDBChain,
+      </if>
+      <if test="ptmpositioninchain != null">
+        PTMPositioninChain,
+      </if>
+      <if test="tco != null">
+        TCO,
+      </if>
+      <if test="kappa != null">
+        KAPPA,
+      </if>
+      <if test="alpha != null">
+        ALPHA,
+      </if>
+      <if test="phi != null">
+        PHI,
+      </if>
+      <if test="psi != null">
+        PSI,
+      </if>
+      <if test="xCa != null">
+        X-CA,
+      </if>
+      <if test="yCa != null">
+        Y-CA,
+      </if>
+      <if test="zCa != null">
+        Z-CA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pdbchain != null">
+        #{pdbchain,jdbcType=VARCHAR},
+      </if>
+      <if test="ptmpositioninchain != null">
+        #{ptmpositioninchain,jdbcType=INTEGER},
+      </if>
+      <if test="tco != null">
+        #{tco,jdbcType=VARCHAR},
+      </if>
+      <if test="kappa != null">
+        #{kappa,jdbcType=VARCHAR},
+      </if>
+      <if test="alpha != null">
+        #{alpha,jdbcType=VARCHAR},
+      </if>
+      <if test="phi != null">
+        #{phi,jdbcType=VARCHAR},
+      </if>
+      <if test="psi != null">
+        #{psi,jdbcType=VARCHAR},
+      </if>
+      <if test="xCa != null">
+        #{xCa,jdbcType=VARCHAR},
+      </if>
+      <if test="yCa != null">
+        #{yCa,jdbcType=VARCHAR},
+      </if>
+      <if test="zCa != null">
+        #{zCa,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectAllDssp" resultMap="BaseResultMap">
+        SELECT * FROM DSSP
+  </select>
+
+  <select id="selectDsspByPdbchain" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM DSSP
+        where PDBChain = #{PDBChain}
+  </select>
+
+</mapper>

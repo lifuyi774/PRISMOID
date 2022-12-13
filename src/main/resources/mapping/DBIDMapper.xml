@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdb.ssm.dao.DBIDDao">
+  <resultMap id="BaseResultMap" type="com.pdb.ssm.model.DBID">
+    <id column="DBID" jdbcType="VARCHAR" property="dbid" />
+    <result column="PDBChain" jdbcType="VARCHAR" property="pdbchain" />
+    <result column="ClickCount" jdbcType="INTEGER" property="clickcount" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    DBID, PDBChain, ClickCount
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dbID
+    where DBID = #{dbid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from dbID
+    where DBID = #{dbid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.pdb.ssm.model.DBID">
+    insert into dbID (DBID, PDBChain, ClickCount
+      )
+    values (#{dbid,jdbcType=VARCHAR}, #{pdbchain,jdbcType=VARCHAR}, #{clickcount,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pdb.ssm.model.DBID">
+    insert into dbID
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dbid != null">
+        DBID,
+      </if>
+      <if test="pdbchain != null">
+        PDBChain,
+      </if>
+      <if test="clickcount != null">
+        ClickCount,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dbid != null">
+        #{dbid,jdbcType=VARCHAR},
+      </if>
+      <if test="pdbchain != null">
+        #{pdbchain,jdbcType=VARCHAR},
+      </if>
+      <if test="clickcount != null">
+        #{clickcount,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.pdb.ssm.model.DBID">
+    update dbID
+    <set>
+      <if test="pdbchain != null">
+        PDBChain = #{pdbchain,jdbcType=VARCHAR},
+      </if>
+      <if test="clickcount != null">
+        ClickCount = #{clickcount,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DBID = #{dbid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.pdb.ssm.model.DBID">
+    update dbID
+    set PDBChain = #{pdbchain,jdbcType=VARCHAR},
+      ClickCount = #{clickcount,jdbcType=INTEGER}
+    where DBID = #{dbid,jdbcType=VARCHAR}
+  </update>
+
+  <update id="addClickCount" parameterType="java.lang.String">
+    update dbID
+    set ClickCount = ClickCount + 1
+    where PDBChain = #{pdbchain,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectMostClickCountPDBChain" resultType="java.lang.String">
+    select PDBChain
+    from dbID
+    order by ClickCount
+    desc
+    limit 5
+  </select>
+</mapper>

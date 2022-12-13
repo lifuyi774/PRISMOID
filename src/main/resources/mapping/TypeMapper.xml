@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdb.ssm.dao.TypeDao">
+  <resultMap id="BaseResultMap" type="com.pdb.ssm.model.Type">
+    <result column="DBID" jdbcType="VARCHAR" property="dbid" />
+    <result column="PDBChain" jdbcType="VARCHAR" property="pdbchain" />
+    <result column="ProteinName" jdbcType="VARCHAR" property="proteinname" />
+  </resultMap>
+  <select id="selectAllType" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM `${table}`
+    </select>
+</mapper>

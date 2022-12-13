@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pdb.ssm.dao.PdbDao">
+
+    <resultMap id="PdbBaseMap" type="com.pdb.ssm.model.Pdbchain">
+        <id column="ID" property="id" jdbcType="INTEGER"/>
+        <result column="PDBID" property="PDBID" jdbcType="VARCHAR"/>
+        <result column="PDBChain" property="PDBChain" jdbcType="VARCHAR"/>
+        <result column="PDBPosition" property="PDBPosition" jdbcType="VARCHAR"/>
+        <result column="UniProtID" property="UniProtID" jdbcType="VARCHAR"/>
+        <result column="UniProtPosition" property="UniProtPosition" jdbcType="INTEGER"/>
+        <result column="PTMType" property="PTMType" jdbcType="VARCHAR"/>
+        <result column="Resolution" property="Resolution" jdbcType="VARCHAR"/>
+        <result column="UniProtKBID" property="UniProtKBID" jdbcType="VARCHAR"/>
+        <result column="ProteinName" property="ProteinName" jdbcType="VARCHAR"/>
+        <result column="GeneName" property="GeneName" jdbcType="VARCHAR"/>
+        <result column="Organism" property="Organism" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectPdbById" parameterType="java.lang.Integer" resultMap="PdbBaseMap">
+        SELECT * FROM main
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectPdbByOther" resultMap="PdbBaseMap">
+        SELECT * FROM main
+        WHERE user_email = #{emailOrPhone} OR user_phone = #{emailOrPhone}
+        AND user_state = #{state}
+    </select>
+
+    <select id="getBrowseList" resultType="com.pdb.ssm.model.Pdbchain">
+        select PTMType,count(distinct PDBChain) as num,b.AAFull as fullName,substr(PTMType,1,length(PTMType)-2) as type from main
+        left join AAvocabulary b
+        on substr(PTMType,length(PTMType),length(PTMType))=b.AAsingle
+        group by PTMType
+    </select>
+
+    <select id="selectPdbByType" parameterType="java.lang.String" resultMap="PdbBaseMap">
+        SELECT * FROM main
+        WHERE PTMType = #{type}
+    </select>
+
+    <select id="getPdbCountByType" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(*) FROM main
+        WHERE PTMType = #{type}
+    </select>
+
+    <select id="getChainFullName" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT AAFull FROM AAvocabulary
+        WHERE AAsingle = #{single}
+    </select>
+
+    <select id="selectPdbByPDBChain" parameterType="java.lang.String" resultMap="PdbBaseMap">
+        SELECT * FROM main
+        WHERE PDBChain = #{chain}
+    </select>
+
+    <select id="selectPdbByUniprotID" parameterType="java.lang.String" resultMap="PdbBaseMap">
+        SELECT * FROM main
+        WHERE UniProtID = #{uniid}
+    </select>
+
+
+    <select id="selectPdbByDatabaseID" parameterType="java.lang.Integer" resultMap="PdbBaseMap">
+        SELECT * FROM main
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectPdbByPDBID" parameterType="java.lang.String" resultMap="PdbBaseMap">
+        SELECT * FROM main
+        WHERE PDBChain like  CONCAT('%','${pdbid}','%')
+    </select>
+
+    <select id="selectPdbByProteinName" parameterType="java.lang.String" resultMap="PdbBaseMap">
+        SELECT * FROM main
+        WHERE ProteinName like  CONCAT('%','${pn}','%')
+    </select>
+
+    <select id="selectPdbByGeneName" parameterType="java.lang.String" resultMap="PdbBaseMap">
+        SELECT * FROM main
+        WHERE GeneName like  CONCAT('%','${pn}','%')
+    </select>
+
+    <select id="selectGroupByPTMType" resultType="com.pdb.ssm.model.GroupType">
+        select substr(PTMType,1,length(PTMType)-2) as name,count(*) as value from main
+        group by name
+        order by value
+        DESC
+    </select>
+
+    <select id="selectGroupByOrganism" resultType="com.pdb.ssm.model.GroupType">
+        select substr(UniProtKBID,instr(UniProtKBID, '_') + 1,length(UniProtKBID)) as name,count(*) as value from main
+        group by name
+        order by value
+        DESC
+    </select>
+
+    <select id="selectGroupByOrganismPDBChain" resultType="com.pdb.ssm.model.GroupType">
+        select substr(UniProtKBID,instr(UniProtKBID, '_') + 1,length(UniProtKBID)) as name,count(distinct PDBChain) as value from main
+        group by name
+        order by value
+        DESC
+    </select>
+
+    <select id="selectMultiPTM" resultMap="PdbBaseMap">
+        select * from main where 1=1
+        <if test="null != PTMType and PTMType.size != 0">
+        and(1=0
+            <foreach item="item" index="index" collection="PTMType">or PTMType like CONCAT('%','${item}','%')
+            </foreach>
+        )
+        </if>
+        <if test="null != PDBChain1 and PDBChain1.size != 0">
+        and(1=0
+            <foreach item="item" index="index" collection="PDBChain1">or PDBChain like CONCAT('%','${item}','%')
+            </foreach>
+        )
+        </if>
+        <if test="null != PDBChain2 and PDBChain2.size != 0">
+        and(1=0
+            <foreach item="item" index="index" collection="PDBChain2">or PDBChain like CONCAT('%','${item}','%')
+            </foreach>
+        )
+        </if>
+        <if test="null != UniProtID and UniProtID.size != 0">
+        and(1=0
+            <foreach item="item" index="index" collection="UniProtID">or UniProtID like CONCAT('%','${item}','%')
+            </foreach>
+        )
+        </if>
+        <if test="null != rangeBottom and null != rangeTop">
+            and Resolution between #{rangeBottom} and #{rangeTop}
+        </if>
+    </select>
+
+    <select id="selectUniProtID" resultType="java.lang.String">
+        select distinct UniProtID from main
+    </select>
+
+    <select id="selectPTMType" resultType="java.lang.String">
+        select distinct PTMType from main
+    </select>
+
+    <select id="selectGroupByDisease" resultType="com.pdb.ssm.model.GroupType">
+        select Diseasename as name, count(*) as value from mutation
+        where Typeofvariant='Disease'
+        group by name
+        order by value
+        DESC
+        LIMIT 0,100
+    </select>
+
+    <select id="selectEntriesForIndex" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT PDBChain) from main
+    </select>
+
+    <select id="selectPTMTypesForIndex" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT PTMType) from main
+    </select>
+
+    <select id="selectOrganismForIndex" resultType="java.lang.Integer">
+        SELECT COUNT(DISTINCT Organism) from main
+    </select>
+
+    <select id="selectPTMSitesForIndex" resultType="java.lang.Integer">
+        SELECT COUNT(*) from main
+    </select>
+
+    <select id="selectEntriesByPTMType" resultType="com.pdb.ssm.model.GroupType">
+        select substr(PTMType,1,length(PTMType)-2) as name,count(distinct PDBChain) as value from main
+        group by name
+        order by value
+        DESC
+    </select>
+
+</mapper>

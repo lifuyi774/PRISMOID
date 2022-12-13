@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdb.ssm.dao.NaccessDao">
+  <resultMap id="BaseResultMap" type="com.pdb.ssm.model.Naccess">
+    <result column="PDBChain" jdbcType="VARCHAR" property="pdbchain" />
+    <result column="PTMPositioninChain" jdbcType="INTEGER" property="ptmpositioninchain" />
+    <result column="All-atoms-absolute" jdbcType="VARCHAR" property="allAtomsAbsolute" />
+    <result column="All-atoms-relative" jdbcType="VARCHAR" property="allAtomsRelative" />
+    <result column="Total-Side-absolute" jdbcType="VARCHAR" property="totalSideAbsolute" />
+    <result column="Total-Side-relative" jdbcType="VARCHAR" property="totalSideRelative" />
+    <result column="Main-Chain-absolute" jdbcType="VARCHAR" property="mainChainAbsolute" />
+    <result column="Main-Chain-relative" jdbcType="VARCHAR" property="mainChainRelative" />
+    <result column="Non-polar-absolute" jdbcType="VARCHAR" property="nonPolarAbsolute" />
+    <result column="Non-polar-relative" jdbcType="VARCHAR" property="nonPolarRelative" />
+    <result column="All-polar-absolute" jdbcType="VARCHAR" property="allPolarAbsolute" />
+    <result column="All-polar-relative" jdbcType="VARCHAR" property="allPolarRelative" />
+  </resultMap>
+  <insert id="insert" parameterType="com.pdb.ssm.model.Naccess">
+    insert into NACCESS (PDBChain, PTMPositioninChain, All-atoms-absolute,
+      All-atoms-relative, Total-Side-absolute, Total-Side-relative,
+      Main-Chain-absolute, Main-Chain-relative, Non-polar-absolute,
+      Non-polar-relative, All-polar-absolute, All-polar-relative
+      )
+    values (#{pdbchain,jdbcType=VARCHAR}, #{ptmpositioninchain,jdbcType=INTEGER}, #{allAtomsAbsolute,jdbcType=VARCHAR},
+      #{allAtomsRelative,jdbcType=VARCHAR}, #{totalSideAbsolute,jdbcType=VARCHAR}, #{totalSideRelative,jdbcType=VARCHAR},
+      #{mainChainAbsolute,jdbcType=VARCHAR}, #{mainChainRelative,jdbcType=VARCHAR}, #{nonPolarAbsolute,jdbcType=VARCHAR},
+      #{nonPolarRelative,jdbcType=VARCHAR}, #{allPolarAbsolute,jdbcType=VARCHAR}, #{allPolarRelative,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.pdb.ssm.model.Naccess">
+    insert into NACCESS
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pdbchain != null">
+        PDBChain,
+      </if>
+      <if test="ptmpositioninchain != null">
+        PTMPositioninChain,
+      </if>
+      <if test="allAtomsAbsolute != null">
+        All-atoms-absolute,
+      </if>
+      <if test="allAtomsRelative != null">
+        All-atoms-relative,
+      </if>
+      <if test="totalSideAbsolute != null">
+        Total-Side-absolute,
+      </if>
+      <if test="totalSideRelative != null">
+        Total-Side-relative,
+      </if>
+      <if test="mainChainAbsolute != null">
+        Main-Chain-absolute,
+      </if>
+      <if test="mainChainRelative != null">
+        Main-Chain-relative,
+      </if>
+      <if test="nonPolarAbsolute != null">
+        Non-polar-absolute,
+      </if>
+      <if test="nonPolarRelative != null">
+        Non-polar-relative,
+      </if>
+      <if test="allPolarAbsolute != null">
+        All-polar-absolute,
+      </if>
+      <if test="allPolarRelative != null">
+        All-polar-relative,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pdbchain != null">
+        #{pdbchain,jdbcType=VARCHAR},
+      </if>
+      <if test="ptmpositioninchain != null">
+        #{ptmpositioninchain,jdbcType=INTEGER},
+      </if>
+      <if test="allAtomsAbsolute != null">
+        #{allAtomsAbsolute,jdbcType=VARCHAR},
+      </if>
+      <if test="allAtomsRelative != null">
+        #{allAtomsRelative,jdbcType=VARCHAR},
+      </if>
+      <if test="totalSideAbsolute != null">
+        #{totalSideAbsolute,jdbcType=VARCHAR},
+      </if>
+      <if test="totalSideRelative != null">
+        #{totalSideRelative,jdbcType=VARCHAR},
+      </if>
+      <if test="mainChainAbsolute != null">
+        #{mainChainAbsolute,jdbcType=VARCHAR},
+      </if>
+      <if test="mainChainRelative != null">
+        #{mainChainRelative,jdbcType=VARCHAR},
+      </if>
+      <if test="nonPolarAbsolute != null">
+        #{nonPolarAbsolute,jdbcType=VARCHAR},
+      </if>
+      <if test="nonPolarRelative != null">
+        #{nonPolarRelative,jdbcType=VARCHAR},
+      </if>
+      <if test="allPolarAbsolute != null">
+        #{allPolarAbsolute,jdbcType=VARCHAR},
+      </if>
+      <if test="allPolarRelative != null">
+        #{allPolarRelative,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectAllNaccess" resultMap="BaseResultMap">
+        SELECT * FROM NACCESS
+  </select>
+
+  <select id="selectNaccessByPdbchain" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM NACCESS
+        where PDBChain = #{PDBChain}
+  </select>
+
+</mapper>
