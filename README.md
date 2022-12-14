@@ -1,11 +1,11 @@
 # PTMPDB
-PRISM - PROTEIN STRUCTURE MODIFICATION
+PRISMOID - PROTEIN STRUCTURE MODIFICATION
 
 ## Introduction
 Developed by Song Group from Monash<br>
-This software is open source, you can fork this [project](https://github.com/firstmetcs/ptmpdb) and create a pull request if you'd like to help us with our development.<br>
+This software is open source, you can fork this [project](https://github.com/lifuyi774/PRISMOID) and create a pull request if you'd like to help us with our development.<br>
 If you have any question during studying this project, you can contact the developer with the email address as follows
-- Fuyi.Li1@monash.edu
+- Fuyi.Li@unimelb.edu.au
 - firstmetcs@163.com
 
 ## Requirements
