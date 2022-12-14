@@ -12,8 +12,8 @@ public class EmailTool {
     public static void sendVerifyCodeEmail(String content, String email) {
         try {
             Properties props = new Properties();
-            props.put("username", "firstmetcs@163.com");
-            props.put("password", "fancs961128");
+            props.put("username", "XXX");
+            props.put("password", "XXX");
             props.put("mail.transport.protocol", "smtp");
             props.put("mail.smtp.host", "smtp.163.com");
             props.put("mail.smtp.port", "465");
